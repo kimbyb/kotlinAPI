@@ -10,8 +10,8 @@ data class PhonebookEntry(
     val id: Long = 0,
 
     @Column(nullable = false)
-    val name: String,
+    val name: String = "",
 
     @Column(nullable = false, unique = true)
-    val phoneNUmber: String
+    val phoneNumber: String = ""
 )
