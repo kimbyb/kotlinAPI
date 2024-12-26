@@ -28,7 +28,7 @@ class PhonebookController(private val phonebookService : PhonebookService) {
     }
 
     @PutMapping("/{id}")
-    fun updateEntry(@RequestBody id: Long,  @RequestBody updatedEntry: PhonebookEntry): ResponseEntity<PhonebookEntry> {
+    fun updateEntry(@PathVariable id: Long,  @RequestBody updatedEntry: PhonebookEntry): ResponseEntity<PhonebookEntry> {
         val existingEntry = phonebookService.getEntryById(id)
         return if (existingEntry != null) {
             val entryToSave = updatedEntry.copy(id = existingEntry.id)
@@ -41,7 +41,7 @@ class PhonebookController(private val phonebookService : PhonebookService) {
 
 
     @DeleteMapping("/{id}")
-    fun deleteEntry(@RequestBody id: Long): ResponseEntity<Void> {
+    fun deleteEntry(@PathVariable id: Long): ResponseEntity<Void> {
         return if (phonebookService.getEntryById(id) != null) {
             phonebookService.deleteEntry(id)
             ResponseEntity.noContent().build()
