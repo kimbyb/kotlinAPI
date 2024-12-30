@@ -20,6 +20,8 @@ spring.datasource.driver-class-name=org.h2.Driver
 
 `GET: /api/phonebook` - returns all records
 
+`POST: /api/phonebook` - make new record
+
 `GET: /api/phonebook/ID` - returns specific record
 
 `PUT: /api/phonebook/ID` - update record by ID
