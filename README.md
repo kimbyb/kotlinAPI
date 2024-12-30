@@ -18,8 +18,11 @@ spring.datasource.driver-class-name=org.h2.Driver
 
 Endpoints:
 `GET: /api/phonebook` - returns all records
+
 `GET: /api/phonebook/ID` - returns specific record
+
 `PUT: /api/phonebook/ID` - update record by ID
+
 `DEL: /api/phonebook/ID` - delete a record
 
 JSON body format:
