@@ -26,8 +26,8 @@ spring.datasource.driver-class-name=org.h2.Driver
 
 `DEL: /api/phonebook/ID` - delete a record
 
-**JSON body format:
-**
+**JSON body format:**
+
 ```
 {
     "name": "Name",
