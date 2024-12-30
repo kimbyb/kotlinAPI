@@ -3,7 +3,7 @@
    `mvn -v`
    If Maven is not installed - please install it for the app run.
 2. Download the Repo
-3. From the Terminal navigate to downloaded folder and run
+3. From the Terminal navigate inside the downloaded folder and run
    `mvn spring-boot:run`
 
 _Note: app is running on port 8080 so please make sure that this port is free_
