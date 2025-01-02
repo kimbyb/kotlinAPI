@@ -1,10 +1,12 @@
-package phonebook
+package phonebook.controller
 
 
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.testng.Assert.assertEquals
 import org.testng.annotations.Test
+import phonebook.data.PhonebookEntry
+import phonebook.service.PhonebookService
 
 class PhonebookControllerTest {
 

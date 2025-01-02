@@ -1,7 +1,9 @@
-package phonebook
+package phonebook.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import phonebook.data.PhonebookEntry
+import phonebook.data.PhonebookRepository
 
 @Service
 class PhonebookService(  @Autowired private val phonebookRepository: PhonebookRepository) {

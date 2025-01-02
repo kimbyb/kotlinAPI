@@ -1,4 +1,4 @@
-package phonebook
+package phonebook.data
 
 import jakarta.persistence.*
 
