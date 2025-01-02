@@ -1,4 +1,4 @@
-package phonebook.data
+package phonebook.entities
 
 import jakarta.persistence.*
 
@@ -13,5 +13,9 @@ data class PhonebookEntry(
     val name: String = "",
 
     @Column(nullable = false, unique = true)
-    val phoneNumber: String = ""
+    val phoneNumber: String = "",
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    val user: User? = null
 )
