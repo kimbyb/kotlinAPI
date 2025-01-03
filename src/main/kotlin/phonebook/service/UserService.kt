@@ -2,6 +2,8 @@ package phonebook.service
 
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import phonebook.dto.PhonebookEntryResponse
+import phonebook.dto.UserResponse
 import phonebook.dto.UserWithPhonebookRequest
 import phonebook.entities.PhonebookEntry
 import phonebook.entities.User
@@ -28,5 +30,20 @@ class UserService(
             )
         }
         phonebookEntryRepository.saveAll(phonebookEntities)
+    }
+
+    fun getAllUsersWithPhonebooks(): List<UserResponse> {
+        return userRepository.findAll().map { user ->
+            UserResponse(
+                id = user.id,
+                username = user.username,
+                phonebookEntries = user.phonebookEntries.map { entry ->
+                    PhonebookEntryResponse(
+                        name = entry.name,
+                        phoneNumber = entry.phoneNumber
+                    )
+                }
+            )
+        }
     }
   }

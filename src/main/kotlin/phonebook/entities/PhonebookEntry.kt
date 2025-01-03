@@ -12,7 +12,7 @@ data class PhonebookEntry(
     @Column(nullable = false)
     val name: String = "",
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     val phoneNumber: String = "",
 
     @ManyToOne
