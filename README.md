@@ -36,15 +36,17 @@ user_id: links to users.id
 
 **Endpoints:**
 
+**Users:**
+
 `GET: /api/users` - returns all users and their phonebooks
 
 `POST: /api/users` - adds new user and their phonebook (body required, type JSON)
 
-`GET: /api/phonebook/ID` - returns specific record
+`GET: /api/users/ID` - returns specific record
 
-`PUT: /api/phonebook/ID` - update record by ID
+`PUT: /api/users/ID` - update record by ID. Supports just update of username
 
-`DEL: /api/phonebook/ID` - delete a record
+`DEL: /api/users/ID` - delete a record
 
 **JSON body format:**
 

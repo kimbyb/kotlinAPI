@@ -6,8 +6,8 @@ import phonebook.dto.AllUsersResponse
 import phonebook.dto.PhonebookEntryResponse
 import phonebook.dto.UserWithPhonebookResponse
 import phonebook.dto.UserWithPhonebookRequest
-import phonebook.entities.PhonebookEntry
-import phonebook.entities.User
+import phonebook.entities.PhonebookEntity
+import phonebook.entities.UserEntity
 import phonebook.repo.PhonebookEntryRepository
 import phonebook.repo.UserRepository
 
@@ -20,11 +20,11 @@ class UserService(
 
     @Transactional
     fun createUserWithPhonebook(request: UserWithPhonebookRequest) {
-        val user = User(username = request.username)
+        val user = UserEntity(username = request.username)
         val savedUser = userRepository.save(user)
 
         val phonebookEntities = request.phonebookEntries.map { entry ->
-            PhonebookEntry(
+            PhonebookEntity(
                 name = entry.name,
                 phoneNumber = entry.phoneNumber,
                 user = savedUser

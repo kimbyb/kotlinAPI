@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*
 import phonebook.dto.AllUsersResponse
 import phonebook.dto.UserWithPhonebookResponse
 import phonebook.dto.UserWithPhonebookRequest
-import phonebook.entities.PhonebookEntry
+import phonebook.entities.PhonebookEntity
 import phonebook.service.UserService
 
 @RestController
@@ -26,7 +26,7 @@ class UserController(private val userService: UserService) {
     }
 
     @GetMapping("/{id}")
-    fun getUserById(@PathVariable id: Long): ResponseEntity<List<PhonebookEntry>> {
+    fun getUserById(@PathVariable id: Long): ResponseEntity<List<PhonebookEntity>> {
         return getUserById(id)
     }
 

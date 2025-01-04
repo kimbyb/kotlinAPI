@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "phonebook")
-data class PhonebookEntry(
+data class PhonebookEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
@@ -17,5 +17,5 @@ data class PhonebookEntry(
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    val user: User? = null
+    val user: UserEntity? = null
 )
