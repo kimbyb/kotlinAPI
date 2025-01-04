@@ -60,13 +60,16 @@ class UserService(
     @Transactional
     fun updateUsername(id: Long, newUsername: String): Boolean {
         val user = userRepository.findById(id).orElse(null) ?: return false
-
-        // Update the username
         val updatedUser = user.copy(username = newUsername)
         userRepository.save(updatedUser)
-
         return true
     }
 
+    @Transactional
+    fun deleteUserById(id: Long): Boolean {
+        val user = userRepository.findById(id).orElse(null) ?: return false
+        userRepository.delete(user)
+        return true
+    }
 
 }
