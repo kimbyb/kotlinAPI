@@ -6,8 +6,11 @@ import org.springframework.web.bind.annotation.*
 import phonebook.dto.AllUsersResponse
 import phonebook.dto.UserWithPhonebookResponse
 import phonebook.dto.UserWithPhonebookRequest
+import phonebook.dto.UserWithoutPhonebookResponse
 import phonebook.entities.PhonebookEntity
+import phonebook.entities.UserEntity
 import phonebook.service.UserService
+import java.util.*
 
 @RestController
 @RequestMapping("/api/users")
@@ -26,8 +29,18 @@ class UserController(private val userService: UserService) {
     }
 
     @GetMapping("/{id}")
-    fun getUserById(@PathVariable id: Long): ResponseEntity<List<PhonebookEntity>> {
-        return getUserById(id)
+    fun getUserById(@PathVariable id: Long): ResponseEntity<UserWithoutPhonebookResponse> {
+        val user = userService.getUserById(id)
+        return if(user != null) {
+            val response = UserWithoutPhonebookResponse(
+                id = user.id,
+                username = user.username
+            )
+            ResponseEntity.ok(response)
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+        }
+
     }
 
     @PostMapping

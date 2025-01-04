@@ -1,6 +1,7 @@
 package phonebook.service
 
 import jakarta.transaction.Transactional
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import phonebook.dto.AllUsersResponse
 import phonebook.dto.PhonebookEntryResponse
@@ -10,6 +11,7 @@ import phonebook.entities.PhonebookEntity
 import phonebook.entities.UserEntity
 import phonebook.repo.PhonebookEntryRepository
 import phonebook.repo.UserRepository
+import java.util.*
 
 @Service
 class UserService(
@@ -40,6 +42,10 @@ class UserService(
                 username = user.username
             )
         }
+    }
+
+    fun getUserById(id: Long): UserEntity? {
+        return userRepository.findByIdOrNull(id)
     }
 
     fun getAllUsersWithPhonebooks(): List<UserWithPhonebookResponse> {

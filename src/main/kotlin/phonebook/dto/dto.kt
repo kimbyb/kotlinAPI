@@ -16,6 +16,12 @@ data class UserWithPhonebookResponse(
     val phonebookEntries: List<PhonebookEntryResponse>
 )
 
+
+data class UserWithoutPhonebookResponse(
+    val id: Long,
+    val username: String
+)
+
 data class AllUsersResponse(
     val id: Long,
     val username: String
