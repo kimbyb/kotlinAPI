@@ -15,10 +15,30 @@ It uses H2 DB. You can access it by following after the app launch
 spring.datasource.url=jdbc:h2:mem:phonebookdb
 spring.datasource.driver-class-name=org.h2.Driver
 
+**Architecture**
+
+The API creates two tables: USERS and PHONEBOOK.
+
+USERS
+```
+id: Long, unique: true
+username: String
+```
+PHONEBOOK
+```
+id: Long, unique: true
+name: String
+phoneNumber: String
+user_id: links to users.id 
+
+```
+
 
 **Endpoints:**
 
-`GET: /api/phonebook` - returns all records
+`GET: /api/users` - returns all users and their phonebooks
+
+`POST: /api/users` - adds new user and their phonebook (body required, type JSON)
 
 `GET: /api/phonebook/ID` - returns specific record
 
@@ -30,7 +50,11 @@ spring.datasource.driver-class-name=org.h2.Driver
 
 ```
 {
-    "name": "Name",
-    "phoneNumber": "987654321"
+  "username": "bub",
+  "phonebookEntries": [
+    { "name": "sue", "phoneNumber": "1234" },
+    { "name": "kim", "phoneNumber": "12435" }
+  ]
 }
+
 ```

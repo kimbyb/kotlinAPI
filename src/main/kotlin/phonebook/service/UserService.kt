@@ -2,8 +2,9 @@ package phonebook.service
 
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import phonebook.dto.AllUsersResponse
 import phonebook.dto.PhonebookEntryResponse
-import phonebook.dto.UserResponse
+import phonebook.dto.UserWithPhonebookResponse
 import phonebook.dto.UserWithPhonebookRequest
 import phonebook.entities.PhonebookEntry
 import phonebook.entities.User
@@ -32,9 +33,18 @@ class UserService(
         phonebookEntryRepository.saveAll(phonebookEntities)
     }
 
-    fun getAllUsersWithPhonebooks(): List<UserResponse> {
+    fun getAllUsers(): List<AllUsersResponse> {
+        return userRepository.findAll().map {user ->
+            AllUsersResponse(
+                id = user.id,
+                username = user.username
+            )
+        }
+    }
+
+    fun getAllUsersWithPhonebooks(): List<UserWithPhonebookResponse> {
         return userRepository.findAll().map { user ->
-            UserResponse(
+            UserWithPhonebookResponse(
                 id = user.id,
                 username = user.username,
                 phonebookEntries = user.phonebookEntries.map { entry ->
@@ -46,4 +56,17 @@ class UserService(
             )
         }
     }
-  }
+
+    @Transactional
+    fun updateUsername(id: Long, newUsername: String): Boolean {
+        val user = userRepository.findById(id).orElse(null) ?: return false
+
+        // Update the username
+        val updatedUser = user.copy(username = newUsername)
+        userRepository.save(updatedUser)
+
+        return true
+    }
+
+
+}

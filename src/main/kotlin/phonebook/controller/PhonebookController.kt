@@ -13,7 +13,7 @@
 //
 //    @GetMapping
 //    fun getAllEntries(): ResponseEntity<List<PhonebookEntry>> {
-//        val entries = phonebookService.getAllEnries()
+//        val entries = phonebookService.getAllEnr ies()
 //        return ResponseEntity.ok(entries)
 //    }
 //

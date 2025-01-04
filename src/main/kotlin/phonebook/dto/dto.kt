@@ -10,10 +10,15 @@ data class PhonebookEntryRequest(
     val phoneNumber: String
 )
 
-data class UserResponse(
+data class UserWithPhonebookResponse(
     val id: Long,
     val username: String,
     val phonebookEntries: List<PhonebookEntryResponse>
+)
+
+data class AllUsersResponse(
+    val id: Long,
+    val username: String
 )
 
 data class PhonebookEntryResponse(

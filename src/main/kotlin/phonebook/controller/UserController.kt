@@ -1,10 +1,12 @@
 package phonebook.controller
 
-import org.apache.catalina.User
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import phonebook.dto.UserResponse
+import phonebook.dto.AllUsersResponse
+import phonebook.dto.UserWithPhonebookResponse
 import phonebook.dto.UserWithPhonebookRequest
+import phonebook.entities.PhonebookEntry
 import phonebook.service.UserService
 
 @RestController
@@ -12,15 +14,47 @@ import phonebook.service.UserService
 class UserController(private val userService: UserService) {
 
 
-    @GetMapping
-    fun getAllEntries(): List<UserResponse> {
+    @GetMapping("/all")
+    fun getAllUsersWithPhonebooks(): List<UserWithPhonebookResponse> {
         return userService.getAllUsersWithPhonebooks()
 
+    }
+
+    @GetMapping("/users")
+    fun getAllUsers(): List<AllUsersResponse> {
+        return userService.getAllUsers()
+    }
+
+    @GetMapping("/{id}")
+    fun getUserById(@PathVariable id: Long): ResponseEntity<List<PhonebookEntry>> {
+        return getUserById(id)
     }
 
     @PostMapping
     fun createUserWithPhonebook(@RequestBody request: UserWithPhonebookRequest): ResponseEntity<String> {
         userService.createUserWithPhonebook(request)
-        return ResponseEntity.ok("User ${request.username} with ${request.phonebookEntries.count()} phonenumbers added ")
+        return ResponseEntity.ok("User ${request.username} with ${request.phonebookEntries.count()} phonenumbers added.")
     }
+
+
+    @PutMapping("/{id}")
+    fun updateUsername(
+        @PathVariable id: Long,
+        @RequestBody updatedUsername: Map<String, String>
+    ): ResponseEntity<String> {
+        val newUsername = updatedUsername["username"]
+        if (newUsername.isNullOrBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Invalid username provided.")
+        }
+
+        val updated = userService.updateUsername(id, newUsername)
+        return if (updated) {
+            ResponseEntity.ok("User with ID $id has been updated with a new username: $newUsername")
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("User with ID $id not found.")
+        }
+    }
+
 }
