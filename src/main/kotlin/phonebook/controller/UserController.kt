@@ -7,8 +7,6 @@ import phonebook.dto.AllUsersResponse
 import phonebook.dto.UserWithPhonebookResponse
 import phonebook.dto.UserWithPhonebookRequest
 import phonebook.dto.UserWithoutPhonebookResponse
-import phonebook.entities.PhonebookEntity
-import phonebook.entities.UserEntity
 import phonebook.service.UserService
 import java.util.*
 
@@ -16,16 +14,15 @@ import java.util.*
 @RequestMapping("/api/users")
 class UserController(private val userService: UserService) {
 
+    @GetMapping
+    fun getAllUsers(): List<AllUsersResponse> {
+        return userService.getAllUsers()
+    }
 
     @GetMapping("/all")
     fun getAllUsersWithPhonebooks(): List<UserWithPhonebookResponse> {
         return userService.getAllUsersWithPhonebooks()
 
-    }
-
-    @GetMapping("/users")
-    fun getAllUsers(): List<AllUsersResponse> {
-        return userService.getAllUsers()
     }
 
     @GetMapping("/{id}")
@@ -40,9 +37,9 @@ class UserController(private val userService: UserService) {
         } else {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
-
     }
 
+    //TODO: make ability to add more than one at a time
     @PostMapping
     fun createUserWithPhonebook(@RequestBody request: UserWithPhonebookRequest): ResponseEntity<String> {
         userService.createUserWithPhonebook(request)
@@ -74,5 +71,4 @@ class UserController(private val userService: UserService) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with ID $id not found.")
         }
     }
-
 }
