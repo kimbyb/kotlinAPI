@@ -63,6 +63,7 @@ class UserService(
         }
     }
 
+
     @Transactional
     fun updateUsername(id: Long, newUsername: String): Boolean {
         val user = userRepository.findById(id).orElse(null) ?: return false

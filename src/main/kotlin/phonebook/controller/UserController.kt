@@ -47,6 +47,7 @@ class UserController(private val userService: UserService) {
     }
 
 
+
     @PutMapping("/{id}")
     fun updateUsername(@PathVariable id: Long, @RequestBody updatedUsername: Map<String, String>): ResponseEntity<String> {
         val newUsername = updatedUsername["username"]

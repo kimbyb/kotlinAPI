@@ -10,10 +10,10 @@ data class PhonebookEntity(
     val id: Long = 0,
 
     @Column(nullable = false)
-    val name: String = "",
+    var name: String = "",
 
     @Column(nullable = false)
-    val phoneNumber: String = "",
+    var phoneNumber: String = "",
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
