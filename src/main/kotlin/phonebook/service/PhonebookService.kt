@@ -1,14 +1,13 @@
 package phonebook.service
 
 import jakarta.transaction.Transactional
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import phonebook.dto.PhonebookEntryResponse
 import phonebook.dto.PhonebookNumber
-import phonebook.dto.PhonebookOfUser
+import phonebook.dto.PhonebookNumberUpdate
 import phonebook.entities.PhonebookEntity
 import phonebook.repo.PhonebookEntryRepository
 import phonebook.repo.UserRepository
-import java.util.*
 
 @Service
 class PhonebookService(
@@ -21,13 +20,11 @@ class PhonebookService(
         val user = userRepository.findById(request.userId).orElseThrow {
             throw IllegalArgumentException("User with ID ${request.userId} not found")
         }
-
         val phonenumber = PhonebookEntity(
             name = request.name,
             phoneNumber = request.phoneNumber,
             user = user
         )
-
         phonebookEntryRepository.save(phonenumber)
     }
 
@@ -37,15 +34,19 @@ class PhonebookService(
     }
 
     @Transactional
-    fun updatePhonebookEntry(id: Long, updatedPhonebook: PhonebookNumber): PhonebookEntity {
+    fun updatePhonebookEntry(id: Long, updatedPhonebook: PhonebookNumberUpdate): PhonebookEntryResponse {
         val existing = phonebookEntryRepository.findById(id).orElseThrow {
-            throw IllegalArgumentException("Phonebook entry with ID $id not found")
+            IllegalArgumentException("Phonebook entry with ID $id not found")
         }
-
-        existing.name = updatedPhonebook.name
-        existing.phoneNumber = updatedPhonebook.phoneNumber
-
-        return phonebookEntryRepository.save(existing)
+        val updatedEntity = existing.copy(
+            name = updatedPhonebook.name,
+            phoneNumber = updatedPhonebook.phoneNumber
+        )
+        return PhonebookEntryResponse(
+            id = updatedEntity.id,
+            name = updatedEntity.name,
+            phoneNumber = updatedEntity.phoneNumber
+        )
     }
 
     @Transactional

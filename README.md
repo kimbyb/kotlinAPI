@@ -36,17 +36,19 @@ user_id: links to users.id
 
 **Endpoints:**
 
-**Users:**
+_**Users:**_
 
-`GET: /api/users` - returns all users and their phonebooks
+`GET: /api/users` - returns all users without phonebooks
 
-`POST: /api/users` - adds new user and their phonebook (body required, type JSON)
+`GET: /api/all` - returns all users and their phonebooks
 
-`GET: /api/users/ID` - returns specific record
+`POST: /api/users` - adds new user and their phonebook (body required, type JSON). Can add one at a time
 
-`PUT: /api/users/ID` - update record by ID. Supports just update of username
+`GET: /api/users/id` - returns specific record
 
-`DEL: /api/users/ID` - delete a record
+`PUT: /api/users/id` - update record by id. Supports just update of username
+
+`DEL: /api/users/id` - delete a record
 
 **JSON body format:**
 
@@ -58,5 +60,26 @@ user_id: links to users.id
     { "name": "kim", "phoneNumber": "12435" }
   ]
 }
-
 ```
+
+_**Phonebook**_
+
+`POST: /api/phonebook/addPhoneNumber` - adds new phone number to users phonebook
+
+**JSON Body**
+```
+{
+  "name": "Kim",
+  "phoneNumber": "9876543210",
+  "userid": 1
+}
+```
+`GET: /api/phonebook/id` - gets all phone numbers by user id
+
+`GET: /api/phonebook/searchByUsername?username=` - seraches by useranme and its parts 
+
+`GET: /api/phonebook/search?phoneNumber=` - seraches by phone number and its parts 
+
+`PUT: /api/phonebook/id` - updates phone number/ name by id
+
+`DELETE: /api/phonebook/id` - deletes phone number by id

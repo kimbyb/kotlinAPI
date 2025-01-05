@@ -14,7 +14,9 @@ data class PhonebookNumber(
     val userId: Long
 )
 
-data class UpdatePhonebookRequest(
+data class PhonebookNumberUpdate(
+    val id: Long,
     val name: String,
     val phoneNumber: String
 )
+

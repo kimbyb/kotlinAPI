@@ -56,7 +56,8 @@ class UserService(
                 phonebookEntries = user.phonebookEntries.map { entry ->
                     PhonebookEntryResponse(
                         name = entry.name,
-                        phoneNumber = entry.phoneNumber
+                        phoneNumber = entry.phoneNumber,
+                        id = entry.id
                     )
                 }
             )

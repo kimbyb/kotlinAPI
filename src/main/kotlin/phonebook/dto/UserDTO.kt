@@ -28,6 +28,7 @@ data class AllUsersResponse(
 )
 
 data class PhonebookEntryResponse(
+    val id: Long,
     val name: String,
     val phoneNumber: String
 )

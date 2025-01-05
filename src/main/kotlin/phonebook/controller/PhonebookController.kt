@@ -3,9 +3,10 @@ package phonebook.controller
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import phonebook.dto.PhonebookEntryResponse
 import phonebook.dto.PhonebookNumber
+import phonebook.dto.PhonebookNumberUpdate
 import phonebook.dto.PhonebookOfUser
-import phonebook.entities.PhonebookEntity
 import phonebook.service.PhonebookService
 
 @RestController
@@ -61,13 +62,25 @@ class PhonebookController(private val phonebookService: PhonebookService) {
         }
     }
 
+    @PutMapping("/{id}")
+    fun updatePhonebookEntry(
+        @PathVariable id: Long,
+        @RequestBody updatedPhonebook: PhonebookNumberUpdate
+    ): ResponseEntity<PhonebookEntryResponse> {
+        return try {
+            val updatedEntry = phonebookService.updatePhonebookEntry(id, updatedPhonebook)
+            ResponseEntity.ok(updatedEntry)
+        } catch (e: IllegalArgumentException) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+        }
+    }
 
     @DeleteMapping("/{id}")
     fun deletePhonenumberById(@PathVariable id: Long): ResponseEntity<String> {
         return if(phonebookService.deletePhoneNumberById(id)) {
             ResponseEntity.ok("Phonenumber with id $id was deleted")
         } else {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body("Phonenumber with id $id not found")
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body("Phone number with id $id not found")
         }
     }
 }
