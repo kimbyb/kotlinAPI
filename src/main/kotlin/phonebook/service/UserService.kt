@@ -11,7 +11,6 @@ import phonebook.entities.PhonebookEntity
 import phonebook.entities.UserEntity
 import phonebook.repo.PhonebookEntryRepository
 import phonebook.repo.UserRepository
-import java.util.*
 
 @Service
 class UserService(

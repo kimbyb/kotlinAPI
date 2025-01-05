@@ -8,7 +8,6 @@ import phonebook.dto.UserWithPhonebookResponse
 import phonebook.dto.UserWithPhonebookRequest
 import phonebook.dto.UserWithoutPhonebookResponse
 import phonebook.service.UserService
-import java.util.*
 
 @RestController
 @RequestMapping("/api/users")
