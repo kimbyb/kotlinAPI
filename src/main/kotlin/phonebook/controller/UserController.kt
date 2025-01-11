@@ -21,21 +21,18 @@ class UserController(private val userService: UserService) {
     @GetMapping("/all")
     fun getAllUsersWithPhonebooks(): List<UserWithPhonebookResponse> {
         return userService.getAllUsersWithPhonebooks()
-
     }
 
     @GetMapping("/{id}")
-    fun getUserById(@PathVariable id: Long): ResponseEntity<UserWithoutPhonebookResponse> {
+    fun getUserById(@PathVariable id: Long): ResponseEntity<UserWithoutPhonebookResponse>? {
         val user = userService.getUserById(id)
-        return if(user != null) {
+        return user?.let {
             val response = UserWithoutPhonebookResponse(
                 id = user.id,
                 username = user.username
             )
             ResponseEntity.ok(response)
-        } else {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
-        }
+        } ?: ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
     }
 
     //TODO: make ability to add more than one at a time
@@ -48,9 +45,9 @@ class UserController(private val userService: UserService) {
 
 
     @PutMapping("/{id}")
-    fun updateUsername(@PathVariable id: Long, @RequestBody updatedUsername: Map<String, String>): ResponseEntity<String> {
-        val newUsername = updatedUsername["username"]
-        if (newUsername.isNullOrBlank()) {
+    fun updateUsername(@PathVariable id: Long, @RequestBody updatedUsername: String): ResponseEntity<String> {
+        val newUsername = updatedUsername
+        if (newUsername.isBlank()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Username can't be empty")
         }

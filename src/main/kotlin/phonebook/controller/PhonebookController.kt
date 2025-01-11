@@ -77,7 +77,7 @@ class PhonebookController(private val phonebookService: PhonebookService) {
 
     @DeleteMapping("/{id}")
     fun deletePhonenumberById(@PathVariable id: Long): ResponseEntity<String> {
-        return if(phonebookService.deletePhoneNumberById(id)) {
+        return if (phonebookService.deletePhoneNumberById(id)) {
             ResponseEntity.ok("Phonenumber with id $id was deleted")
         } else {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body("Phone number with id $id not found")

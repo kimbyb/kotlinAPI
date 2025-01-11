@@ -1,6 +1,6 @@
 package phonebook.repo
 
 import org.springframework.data.jpa.repository.JpaRepository
-import phonebook.entities.UserEntity
+import phonebook.entities.User
 
-interface UserRepository : JpaRepository<UserEntity, Long>
+interface UserRepository : JpaRepository<User, Long>

@@ -5,7 +5,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name="users")
-data class UserEntity(
+data class User(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,5 +15,5 @@ data class UserEntity(
     val username: String = "",
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val phonebookEntries: List<PhonebookEntity> = mutableListOf()
+    val phonebookEntries: List<Phonebook> = mutableListOf()
 )

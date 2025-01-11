@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
 import org.mockito.kotlin.*
 import phonebook.dto.AllUsersResponse
-import phonebook.entities.UserEntity
+import phonebook.entities.User
 import phonebook.repo.PhonebookEntryRepository
 import phonebook.repo.UserRepository
 import phonebook.service.UserService
@@ -20,8 +20,8 @@ class UserServiceTest {
     fun `getAllUsers returns a list of all users`() {
 
         val mockUsers = listOf(
-            UserEntity(id = 1, username = "John"),
-            UserEntity(id = 2, username = "Jane")
+            User(id = 1, username = "John"),
+            User(id = 2, username = "Jane")
         )
         whenever(userRepository.findAll()).thenReturn(mockUsers)
 
@@ -35,7 +35,7 @@ class UserServiceTest {
     @Test
     fun `getUserById returns user when found`() {
 
-        val mockUser = UserEntity(id = 1, username = "John")
+        val mockUser = User(id = 1, username = "John")
         whenever(userRepository.findById(1)).thenReturn(java.util.Optional.of(mockUser))
 
         val result = userService.getUserById(1)

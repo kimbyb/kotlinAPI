@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 import phonebook.dto.PhonebookEntryResponse
 import phonebook.dto.PhonebookNumber
 import phonebook.dto.PhonebookNumberUpdate
-import phonebook.entities.PhonebookEntity
+import phonebook.entities.Phonebook
 import phonebook.repo.PhonebookEntryRepository
 import phonebook.repo.UserRepository
 
@@ -20,7 +20,7 @@ class PhonebookService(
         val user = userRepository.findById(request.userId).orElseThrow {
             throw IllegalArgumentException("User with ID ${request.userId} not found")
         }
-        val phonenumber = PhonebookEntity(
+        val phonenumber = Phonebook(
             name = request.name,
             phoneNumber = request.phoneNumber,
             user = user
@@ -28,8 +28,7 @@ class PhonebookService(
         phonebookEntryRepository.save(phonenumber)
     }
 
-    @Transactional
-    fun getAllPhonesByUserId(userId: Long): List<PhonebookEntity> {
+    fun getAllPhonesByUserId(userId: Long): List<Phonebook> {
         return phonebookEntryRepository.findAllByUserId(userId)
     }
 
@@ -51,8 +50,7 @@ class PhonebookService(
 
     @Transactional
     fun deletePhoneNumberById(id: Long): Boolean {
-        val number = phonebookEntryRepository.findById(id).orElse(null) ?: return false
-        phonebookEntryRepository.delete(number)
+        phonebookEntryRepository.delete(phonebookEntryRepository.findById(id).orElse(null) ?: return false)
         return true
     }
 
