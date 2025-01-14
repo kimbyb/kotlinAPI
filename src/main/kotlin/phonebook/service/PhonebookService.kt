@@ -2,9 +2,7 @@ package phonebook.service
 
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import phonebook.dto.PhonebookEntryResponse
-import phonebook.dto.PhonebookNumber
-import phonebook.dto.PhonebookNumberUpdate
+import phonebook.dto.*
 import phonebook.entities.Phonebook
 import phonebook.repo.PhonebookEntryRepository
 import phonebook.repo.UserRepository
@@ -54,20 +52,9 @@ class PhonebookService(
         return true
     }
 
-    fun searchByUsername(username: String): List<Map<String, Any?>> {
-        val entries = phonebookEntryRepository.findByUsername(username)
-        return entries.map { entry ->
-            mapOf(
-                "id" to entry.id,
-                "name" to (entry.user?.username),
-                "phonebook" to listOf(
-                    mapOf(
-                        "name" to entry.name,
-                        "phoneNumber" to entry.phoneNumber
-                    )
-                )
-            )
-        }
+    fun searchByUsername(username: String): List<Phonebook> {
+        val entries = phonebookEntryRepository.findByUserUsernameContainingIgnoreCase(username)
+        return entries
     }
 
     fun searchByPhoneNumber(phoneNumber: String): List<Map<String, Any>> {

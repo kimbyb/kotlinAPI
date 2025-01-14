@@ -1,30 +1,16 @@
 package phonebook.repo
 
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.query.Param
+import phonebook.dto.PhonebookEntry
+import phonebook.dto.PhonebookEntryRequest
 import phonebook.entities.Phonebook
 
 interface PhonebookEntryRepository : JpaRepository<Phonebook, Long> {
 
-    @Query("SELECT p FROM PhonebookEntity p WHERE p.user.id = :userId")
-    fun findAllByUserId(@Param("userId") userId: Long): List<Phonebook>
+    fun findAllByUserId(userId: Long): List<Phonebook>
 
-    @Query("""
-    SELECT p 
-    FROM PhonebookEntity p 
-    WHERE LOWER(p.user.username) LIKE LOWER(CONCAT('%', :username, '%'))
-""")
-    fun findByUsername(@Param("username") username: String): List<Phonebook>
+    fun findByUserUsernameContainingIgnoreCase(username: String): List<Phonebook>
 
-
-    @Query("""
-    SELECT p 
-    FROM PhonebookEntity p 
-    WHERE p.phoneNumber LIKE %:phoneNumber%
-""")
-    fun findByPhoneNumber(@Param("phoneNumber") phoneNumber: String): List<Phonebook>
-
-
+    fun findByPhoneNumber(phoneNumber: String): List<Phonebook>
 }
 

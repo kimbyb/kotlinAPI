@@ -3,10 +3,7 @@ package phonebook.controller
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import phonebook.dto.PhonebookEntryResponse
-import phonebook.dto.PhonebookNumber
-import phonebook.dto.PhonebookNumberUpdate
-import phonebook.dto.PhonebookOfUser
+import phonebook.dto.*
 import phonebook.service.PhonebookService
 
 @RestController
@@ -24,11 +21,11 @@ class PhonebookController(private val phonebookService: PhonebookService) {
     }
 
     @GetMapping("/{id}")
-    fun getAllPhonesByUserId(@PathVariable id: Long): ResponseEntity<List<PhonebookOfUser>> {
+    fun getAllPhonesByUserId(@PathVariable id: Long): ResponseEntity<List<phonebook.dto.Phonebook>> {
         val numbers = phonebookService.getAllPhonesByUserId(id)
         return if (numbers.isNotEmpty()) {
             val response = numbers.map { phonebookEntity ->
-                PhonebookOfUser(
+                phonebook.dto.Phonebook(
                     id = phonebookEntity.id,
                     name = phonebookEntity.name,
                     phoneNumber = phonebookEntity.phoneNumber,
@@ -41,15 +38,10 @@ class PhonebookController(private val phonebookService: PhonebookService) {
         }
     }
 
-
     @GetMapping("/searchByUsername")
-    fun searchByUsername(@RequestParam username: String): ResponseEntity<List<Map<String, Any?>>> {
-        val results = phonebookService.searchByUsername(username)
-        return if (results.isNotEmpty()) {
-            ResponseEntity.ok(results)
-        } else {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body(emptyList())
-        }
+    fun searchByUsername(@RequestParam username: String): List<Phonebook> {
+        val response = phonebookService.searchByUsername(username)
+        return response
     }
 
     @GetMapping("/search")

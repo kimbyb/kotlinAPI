@@ -1,10 +1,16 @@
 package phonebook.dto
 
-data class PhonebookOfUser(
+data class Phonebook(
     val id: Long,
     val name: String,
     val phoneNumber: String,
     val userName: String?
+)
+
+data class PhonebookEntry(
+    val name: String,
+    val phoneNumber: String,
+    val username: String?
 )
 
 data class PhonebookNumber(
