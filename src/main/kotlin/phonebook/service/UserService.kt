@@ -4,8 +4,6 @@ import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import phonebook.dto.AllUsersResponse
-import phonebook.dto.PhonebookEntryResponse
-import phonebook.dto.UserWithPhonebookResponse
 import phonebook.dto.UserWithPhonebookRequest
 import phonebook.entities.Phonebook
 import phonebook.entities.User
@@ -46,20 +44,8 @@ class UserService(
         return userRepository.findByIdOrNull(id)
     }
 
-    fun getAllUsersWithPhonebooks(): List<UserWithPhonebookResponse> {
-        return userRepository.findAll().map { user ->
-            UserWithPhonebookResponse(
-                id = user.id,
-                username = user.username,
-                phonebookEntries = user.phonebookEntries.map { entry ->
-                    PhonebookEntryResponse(
-                        name = entry.name,
-                        phoneNumber = entry.phoneNumber,
-                        id = entry.id
-                    )
-                }
-            )
-        }
+    fun getAllUsersWithPhonebooks(): List<User> {
+        return userRepository.findAll()
     }
 
     @Transactional

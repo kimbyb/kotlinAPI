@@ -4,9 +4,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import phonebook.dto.AllUsersResponse
-import phonebook.dto.UserWithPhonebookResponse
 import phonebook.dto.UserWithPhonebookRequest
-import phonebook.dto.UserWithoutPhonebookResponse
+import phonebook.entities.User
 import phonebook.service.UserService
 
 @RestController
@@ -19,19 +18,15 @@ class UserController(private val userService: UserService) {
     }
 
     @GetMapping("/all")
-    fun getAllUsersWithPhonebooks(): List<UserWithPhonebookResponse> {
+    fun getAllUsersWithPhonebooks(): List<User> {
         return userService.getAllUsersWithPhonebooks()
     }
 
     @GetMapping("/{id}")
-    fun getUserById(@PathVariable id: Long): ResponseEntity<UserWithoutPhonebookResponse>? {
+    fun getUserById(@PathVariable id: Long): ResponseEntity<User>? {
         val user = userService.getUserById(id)
         return user?.let {
-            val response = UserWithoutPhonebookResponse(
-                id = user.id,
-                username = user.username
-            )
-            ResponseEntity.ok(response)
+            ResponseEntity.ok(user)
         } ?: ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
     }
 
@@ -41,8 +36,6 @@ class UserController(private val userService: UserService) {
         userService.createUserWithPhonebook(request)
         return ResponseEntity.ok("User ${request.username} with ${request.phonebookEntries.count()} phone numbers added.")
     }
-
-
 
     @PutMapping("/{id}")
     fun updateUsername(@PathVariable id: Long, @RequestBody updatedUsername: String): ResponseEntity<String> {
