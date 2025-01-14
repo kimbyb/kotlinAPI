@@ -1,5 +1,6 @@
 package phonebook.entities
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
@@ -17,5 +18,6 @@ data class Phonebook(
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     val user: User? = null
 )

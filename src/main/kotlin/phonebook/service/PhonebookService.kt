@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import phonebook.dto.*
 import phonebook.entities.Phonebook
+import phonebook.entities.User
 import phonebook.repo.PhonebookEntryRepository
 import phonebook.repo.UserRepository
 
@@ -31,19 +32,14 @@ class PhonebookService(
     }
 
     @Transactional
-    fun updatePhonebookEntry(id: Long, updatedPhonebook: PhonebookNumberUpdate): PhonebookEntryResponse {
+    fun updatePhonebookEntry(id: Long, updatedPhonebook: PhonebookNumberUpdate): Phonebook {
         val existing = phonebookEntryRepository.findById(id).orElseThrow {
             IllegalArgumentException("Phonebook entry with ID $id not found")
         }
-        val updatedEntity = existing.copy(
-            name = updatedPhonebook.name,
-            phoneNumber = updatedPhonebook.phoneNumber
-        )
-        return PhonebookEntryResponse(
-            id = updatedEntity.id,
-            name = updatedEntity.name,
-            phoneNumber = updatedEntity.phoneNumber
-        )
+        existing.name = updatedPhonebook.name
+        existing.phoneNumber = updatedPhonebook.phoneNumber
+
+        return existing
     }
 
     @Transactional
@@ -53,19 +49,11 @@ class PhonebookService(
     }
 
     fun searchByUsername(username: String): List<Phonebook> {
-        val entries = phonebookEntryRepository.findByUserUsernameContainingIgnoreCase(username)
-        return entries
+        return phonebookEntryRepository.findByUserUsernameContainingIgnoreCase(username)
     }
 
-    fun searchByPhoneNumber(phoneNumber: String): List<Map<String, Any>> {
-        val entries = phonebookEntryRepository.findByPhoneNumber(phoneNumber)
-        return entries.map { entry ->
-            mapOf(
-                "id" to entry.id,
-                "name" to entry.name,
-                "phoneNumber" to entry.phoneNumber
-            )
-        }
+    fun searchByPhoneNumber(phoneNumber: String): List<Phonebook> {
+        return phonebookEntryRepository.findByPhoneNumber(phoneNumber)
     }
 
 }

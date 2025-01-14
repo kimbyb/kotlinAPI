@@ -39,7 +39,7 @@ class UserController(private val userService: UserService) {
     @PostMapping
     fun createUserWithPhonebook(@RequestBody request: UserWithPhonebookRequest): ResponseEntity<String> {
         userService.createUserWithPhonebook(request)
-        return ResponseEntity.ok("User ${request.username} with ${request.phonebookEntries.count()} phonenumbers added.")
+        return ResponseEntity.ok("User ${request.username} with ${request.phonebookEntries.count()} phone numbers added.")
     }
 
 

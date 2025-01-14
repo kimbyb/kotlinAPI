@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import phonebook.dto.*
+import phonebook.entities.Phonebook
 import phonebook.service.PhonebookService
 
 @RestController
@@ -45,7 +46,7 @@ class PhonebookController(private val phonebookService: PhonebookService) {
     }
 
     @GetMapping("/search")
-    fun searchByPhoneNumber(@RequestParam phoneNumber: String): ResponseEntity<List<Map<String, Any>>> {
+    fun searchByPhoneNumber(@RequestParam phoneNumber: String): ResponseEntity<List<Phonebook>> {
         val results = phonebookService.searchByPhoneNumber(phoneNumber)
         return if (results.isNotEmpty()) {
             ResponseEntity.ok(results)
@@ -58,7 +59,7 @@ class PhonebookController(private val phonebookService: PhonebookService) {
     fun updatePhonebookEntry(
         @PathVariable id: Long,
         @RequestBody updatedPhonebook: PhonebookNumberUpdate
-    ): ResponseEntity<PhonebookEntryResponse> {
+    ): ResponseEntity<Phonebook> {
         return try {
             val updatedEntry = phonebookService.updatePhonebookEntry(id, updatedPhonebook)
             ResponseEntity.ok(updatedEntry)
