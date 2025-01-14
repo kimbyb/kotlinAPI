@@ -22,18 +22,10 @@ class PhonebookController(private val phonebookService: PhonebookService) {
     }
 
     @GetMapping("/{id}")
-    fun getAllPhonesByUserId(@PathVariable id: Long): ResponseEntity<List<phonebook.dto.Phonebook>> {
+    fun getAllPhonesByUserId(@PathVariable id: Long): ResponseEntity<List<Phonebook>> {
         val numbers = phonebookService.getAllPhonesByUserId(id)
         return if (numbers.isNotEmpty()) {
-            val response = numbers.map { phonebookEntity ->
-                phonebook.dto.Phonebook(
-                    id = phonebookEntity.id,
-                    name = phonebookEntity.name,
-                    phoneNumber = phonebookEntity.phoneNumber,
-                    userName = phonebookEntity.user?.username
-                )
-            }
-            ResponseEntity.ok(response)
+            ResponseEntity.ok(numbers)
         } else {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
