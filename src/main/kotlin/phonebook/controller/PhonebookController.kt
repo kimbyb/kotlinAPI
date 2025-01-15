@@ -3,7 +3,6 @@ package phonebook.controller
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import phonebook.dto.*
 import phonebook.entities.Phonebook
 import phonebook.service.PhonebookService
 
@@ -12,10 +11,10 @@ import phonebook.service.PhonebookService
 class PhonebookController(private val phonebookService: PhonebookService) {
 
     @PostMapping("/addPhoneNumber")
-    fun addPhonenumberToUser(@RequestBody request: PhonebookNumber): ResponseEntity<String> {
+    fun addPhonenumberToUser(@RequestBody request: Phonebook): ResponseEntity<String> {
         return try {
             phonebookService.addPhonenumberToUser(request)
-            ResponseEntity.ok("Phone number ${request.phoneNumber} added to user ID ${request.userId}")
+            ResponseEntity.ok("Phone number ${request.phoneNumber} added to user ID ${request.id}")
         } catch (e: IllegalArgumentException) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
         }
@@ -50,7 +49,7 @@ class PhonebookController(private val phonebookService: PhonebookService) {
     @PutMapping("/{id}")
     fun updatePhonebookEntry(
         @PathVariable id: Long,
-        @RequestBody updatedPhonebook: PhonebookNumberUpdate
+        @RequestBody updatedPhonebook: Phonebook
     ): ResponseEntity<Phonebook> {
         return try {
             val updatedEntry = phonebookService.updatePhonebookEntry(id, updatedPhonebook)

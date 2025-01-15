@@ -3,8 +3,6 @@ package phonebook.controller
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import phonebook.dto.AllUsersResponse
-import phonebook.dto.UserWithPhonebookRequest
 import phonebook.entities.User
 import phonebook.service.UserService
 
@@ -13,7 +11,7 @@ import phonebook.service.UserService
 class UserController(private val userService: UserService) {
 
     @GetMapping
-    fun getAllUsers(): List<AllUsersResponse> {
+    fun getAllUsers(): List<User> {
         return userService.getAllUsers()
     }
 
@@ -32,7 +30,7 @@ class UserController(private val userService: UserService) {
 
     //TODO: make ability to add more than one at a time
     @PostMapping
-    fun createUserWithPhonebook(@RequestBody request: UserWithPhonebookRequest): ResponseEntity<String> {
+    fun createUserWithPhonebook(@RequestBody request: User): ResponseEntity<String> {
         userService.createUserWithPhonebook(request)
         return ResponseEntity.ok("User ${request.username} with ${request.phonebookEntries.count()} phone numbers added.")
     }

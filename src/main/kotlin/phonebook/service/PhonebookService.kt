@@ -2,9 +2,7 @@ package phonebook.service
 
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import phonebook.dto.*
 import phonebook.entities.Phonebook
-import phonebook.entities.User
 import phonebook.repo.PhonebookEntryRepository
 import phonebook.repo.UserRepository
 
@@ -15,9 +13,9 @@ class PhonebookService(
 ) {
 
     @Transactional
-    fun addPhonenumberToUser(request: PhonebookNumber) {
-        val user = userRepository.findById(request.userId).orElseThrow {
-            throw IllegalArgumentException("User with ID ${request.userId} not found")
+    fun addPhonenumberToUser(request: Phonebook) {
+        val user = userRepository.findById(request.id).orElseThrow {
+            throw IllegalArgumentException("User with ID ${request.id} not found")
         }
         val phonenumber = Phonebook(
             name = request.name,
@@ -32,7 +30,7 @@ class PhonebookService(
     }
 
     @Transactional
-    fun updatePhonebookEntry(id: Long, updatedPhonebook: PhonebookNumberUpdate): Phonebook {
+    fun updatePhonebookEntry(id: Long, updatedPhonebook: Phonebook): Phonebook {
         val existing = phonebookEntryRepository.findById(id).orElseThrow {
             IllegalArgumentException("Phonebook entry with ID $id not found")
         }
