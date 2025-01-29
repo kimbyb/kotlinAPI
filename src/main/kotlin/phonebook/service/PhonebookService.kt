@@ -2,7 +2,7 @@ package phonebook.service
 
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import phonebook.entities.Phonebook
+import phonebook.entities.PhonebookEntity
 import phonebook.repo.PhonebookEntryRepository
 import phonebook.repo.UserRepository
 
@@ -13,24 +13,24 @@ class PhonebookService(
 ) {
 
     @Transactional
-    fun addPhonenumberToUser(request: Phonebook) {
+    fun addPhonenumberToUser(request: PhonebookEntity) {
         val user = userRepository.findById(request.id).orElseThrow {
             throw IllegalArgumentException("User with ID ${request.id} not found")
         }
-        val phonenumber = Phonebook(
+        val phoneNumber = PhonebookEntity(
             name = request.name,
             phoneNumber = request.phoneNumber,
             user = user
         )
-        phonebookEntryRepository.save(phonenumber)
+        phonebookEntryRepository.save(phoneNumber)
     }
 
-    fun getAllPhonesByUserId(userId: Long): List<Phonebook> {
+    fun getAllPhonesByUserId(userId: Long): List<PhonebookEntity> {
         return phonebookEntryRepository.findAllByUserId(userId)
     }
 
     @Transactional
-    fun updatePhonebookEntry(id: Long, updatedPhonebook: Phonebook): Phonebook {
+    fun updatePhonebookEntry(id: Long, updatedPhonebook: PhonebookEntity): PhonebookEntity {
         val existing = phonebookEntryRepository.findById(id).orElseThrow {
             IllegalArgumentException("Phonebook entry with ID $id not found")
         }
@@ -46,11 +46,11 @@ class PhonebookService(
         return true
     }
 
-    fun searchByUsername(username: String): List<Phonebook> {
+    fun searchByUsername(username: String): List<PhonebookEntity> {
         return phonebookEntryRepository.findByUserUsernameContainingIgnoreCase(username)
     }
 
-    fun searchByPhoneNumber(phoneNumber: String): List<Phonebook> {
+    fun searchByPhoneNumber(phoneNumber: String): List<PhonebookEntity> {
         return phonebookEntryRepository.findByPhoneNumber(phoneNumber)
     }
 

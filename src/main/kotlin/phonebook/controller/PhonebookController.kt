@@ -3,7 +3,7 @@ package phonebook.controller
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import phonebook.entities.Phonebook
+import phonebook.entities.PhonebookEntity
 import phonebook.service.PhonebookService
 
 @RestController
@@ -11,7 +11,7 @@ import phonebook.service.PhonebookService
 class PhonebookController(private val phonebookService: PhonebookService) {
 
     @PostMapping("/addPhoneNumber")
-    fun addPhonenumberToUser(@RequestBody request: Phonebook): ResponseEntity<String> {
+    fun addPhonenumberToUser(@RequestBody request: PhonebookEntity): ResponseEntity<String> {
         return try {
             phonebookService.addPhonenumberToUser(request)
             ResponseEntity.ok("Phone number ${request.phoneNumber} added to user ID ${request.id}")
@@ -21,7 +21,7 @@ class PhonebookController(private val phonebookService: PhonebookService) {
     }
 
     @GetMapping("/{id}")
-    fun getAllPhonesByUserId(@PathVariable id: Long): ResponseEntity<List<Phonebook>> {
+    fun getAllPhonesByUserId(@PathVariable id: Long): ResponseEntity<List<PhonebookEntity>> {
         val numbers = phonebookService.getAllPhonesByUserId(id)
         return if (numbers.isNotEmpty()) {
             ResponseEntity.ok(numbers)
@@ -31,13 +31,17 @@ class PhonebookController(private val phonebookService: PhonebookService) {
     }
 
     @GetMapping("/searchByUsername")
-    fun searchByUsername(@RequestParam username: String): List<Phonebook> {
+    fun searchByUsername(@RequestParam username: String): ResponseEntity<List<PhonebookEntity>> {
         val response = phonebookService.searchByUsername(username)
-        return response
+        return if (response.isEmpty()) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(emptyList())
+        } else {
+            ResponseEntity.ok(response)
+        }
     }
 
     @GetMapping("/search")
-    fun searchByPhoneNumber(@RequestParam phoneNumber: String): ResponseEntity<List<Phonebook>> {
+    fun searchByPhoneNumber(@RequestParam phoneNumber: String): ResponseEntity<List<PhonebookEntity>> {
         val results = phonebookService.searchByPhoneNumber(phoneNumber)
         return if (results.isNotEmpty()) {
             ResponseEntity.ok(results)
@@ -49,8 +53,8 @@ class PhonebookController(private val phonebookService: PhonebookService) {
     @PutMapping("/{id}")
     fun updatePhonebookEntry(
         @PathVariable id: Long,
-        @RequestBody updatedPhonebook: Phonebook
-    ): ResponseEntity<Phonebook> {
+        @RequestBody updatedPhonebook: PhonebookEntity
+    ): ResponseEntity<PhonebookEntity> {
         return try {
             val updatedEntry = phonebookService.updatePhonebookEntry(id, updatedPhonebook)
             ResponseEntity.ok(updatedEntry)

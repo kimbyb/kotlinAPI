@@ -4,20 +4,19 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import phonebook.controller.PhonebookController
-import phonebook.entities.Phonebook
+import phonebook.entities.PhonebookEntity
 import phonebook.service.PhonebookService
 
-class PhonebookControllerTest {
+class PhonebookEntityControllerTest {
 
     private val phonebookService = mock(PhonebookService::class.java)
     private val phonebookController = PhonebookController(phonebookService)
 
     @Test
-    fun updatePhonebookEntry_success() {
+    fun checkIfUserCanUpdatePhonebook() {
         val id = 1L
-        val updatedPhonebook = Phonebook(id, "123456789")
+        val updatedPhonebook = PhonebookEntity(id, "123456789")
         `when`(phonebookService.updatePhonebookEntry(id, updatedPhonebook)).thenReturn(updatedPhonebook)
 
         val response = phonebookController.updatePhonebookEntry(id, updatedPhonebook)
@@ -27,9 +26,9 @@ class PhonebookControllerTest {
     }
 
     @Test
-    fun updatePhonebookEntry_notFound() {
+    fun userCanNotUpdateNonExistingPhonebook() {
         val id = 1L
-        val updatedPhonebook = Phonebook(id, "123456789")
+        val updatedPhonebook = PhonebookEntity(id, "123456789")
         `when`(phonebookService.updatePhonebookEntry(id, updatedPhonebook)).thenThrow(IllegalArgumentException::class.java)
 
         val response = phonebookController.updatePhonebookEntry(id, updatedPhonebook)
@@ -39,7 +38,7 @@ class PhonebookControllerTest {
     }
 
     @Test
-    fun deletePhonenumberById_success() {
+    fun userCanDeletePhonebookById() {
         val id = 1L
         `when`(phonebookService.deletePhoneNumberById(id)).thenReturn(true)
 
@@ -50,7 +49,7 @@ class PhonebookControllerTest {
     }
 
     @Test
-    fun deletePhonenumberById_notFound() {
+    fun userCanNotDeleteNonExisitngPhoneNumber() {
         val id = 1L
         `when`(phonebookService.deletePhoneNumberById(id)).thenReturn(false)
 

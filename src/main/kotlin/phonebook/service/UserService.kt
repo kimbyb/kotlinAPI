@@ -3,8 +3,8 @@ package phonebook.service
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import phonebook.entities.Phonebook
-import phonebook.entities.User
+import phonebook.entities.PhonebookEntity
+import phonebook.entities.UserEntity
 import phonebook.repo.PhonebookEntryRepository
 import phonebook.repo.UserRepository
 
@@ -15,12 +15,12 @@ class UserService(
 ) {
 
     @Transactional
-    fun createUserWithPhonebook(request: User) {
-        val user = User(username = request.username)
+    fun createUserWithPhonebook(request: UserEntity) {
+        val user = UserEntity(username = request.username)
         val savedUser = userRepository.save(user)
 
         request.phonebookEntries.forEach { entry ->
-            val phonebook = Phonebook(
+            val phonebook = PhonebookEntity(
                 name = entry.name,
                 phoneNumber = entry.phoneNumber,
                 user = savedUser
@@ -29,20 +29,20 @@ class UserService(
         }
     }
 
-    fun getAllUsers(): List<User> {
+    fun getAllUsers(): List<UserEntity> {
         return userRepository.findAll().map {user ->
-            User(
+            UserEntity(
                 id = user.id,
                 username = user.username
             )
         }
     }
 
-    fun getUserById(id: Long): User? {
+    fun getUserById(id: Long): UserEntity? {
         return userRepository.findByIdOrNull(id)
     }
 
-    fun getAllUsersWithPhonebooks(): List<User> {
+    fun getAllUsersWithPhonebooks(): List<UserEntity> {
         return userRepository.findAll()
     }
 

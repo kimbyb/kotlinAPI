@@ -5,7 +5,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "phonebook")
-data class Phonebook(
+data class PhonebookEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
@@ -19,5 +19,5 @@ data class Phonebook(
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
-    val user: User? = null
+    val user: UserEntity? = null
 )
