@@ -19,23 +19,18 @@ class UserService(
         val user = UserEntity(username = request.username)
         val savedUser = userRepository.save(user)
 
-        request.phonebookEntries.forEach { entry ->
-            val phonebook = PhonebookEntity(
+        val phonebookEntries = request.phonebookEntries.map { entry ->
+            PhonebookEntity(
                 name = entry.name,
                 phoneNumber = entry.phoneNumber,
                 user = savedUser
             )
-            phonebookEntryRepository.save(phonebook)
         }
+        phonebookEntryRepository.saveAll(phonebookEntries)
     }
 
     fun getAllUsers(): List<UserEntity> {
-        return userRepository.findAll().map {user ->
-            UserEntity(
-                id = user.id,
-                username = user.username
-            )
-        }
+        return userRepository.findAll()
     }
 
     fun getUserById(id: Long): UserEntity? {
@@ -47,18 +42,23 @@ class UserService(
     }
 
     @Transactional
-    fun updateUsername(id: Long, newUsername: String): Boolean {
-        val user = userRepository.findById(id).orElse(null) ?: return false
+    fun updateUsername(id: Long, newUsername: String) {
+        val user = userRepository.findById(id).orElseThrow {
+            throw NoSuchElementException("User with ID $id not found")
+        }
+        if (newUsername.isBlank()) {
+            throw IllegalArgumentException("Username cannot be empty")
+        }
         val updatedUser = user.copy(username = newUsername)
         userRepository.save(updatedUser)
-        return true
     }
 
     @Transactional
     fun deleteUserById(id: Long): Boolean {
-        val user = userRepository.findById(id).orElse(null) ?: return false
+        val user = userRepository.findById(id).orElseThrow {
+            throw NoSuchElementException("User with ID $id not found")
+        }
         userRepository.delete(user)
         return true
     }
-
 }

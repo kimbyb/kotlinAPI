@@ -15,11 +15,6 @@ class UserController(private val userService: UserService) {
         return userService.getAllUsers()
     }
 
-    @GetMapping("/all")
-    fun getAllUsersWithPhonebooks(): List<UserEntity> {
-        return userService.getAllUsersWithPhonebooks()
-    }
-
     @GetMapping("/{id}")
     fun getUserById(@PathVariable id: Long): ResponseEntity<UserEntity>? {
         val user = userService.getUserById(id)
@@ -41,12 +36,11 @@ class UserController(private val userService: UserService) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Username can't be empty")
         }
-        val updated = userService.updateUsername(id, updatedUsername.toString())
-        return if (updated) {
-            ResponseEntity.ok("User with ID $id has been updated with a new username: ${updatedUsername.toString()}")
-        } else {
-            ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("User with ID $id not found.")
+        return try {
+            userService.updateUsername(id, updatedUsername) // Now we don't store the result
+            ResponseEntity.ok("User with ID $id has been updated with a new username: $updatedUsername")
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
         }
     }
 
