@@ -46,7 +46,7 @@ _**Users:**_
 
 `GET: /api/users/id` - returns specific record
 
-`PUT: /api/users/id` - update record by id. Supports just update of username
+`PUT: /api/users/id` - update record by id. Supports just update of username. Use plain text for it
 
 `DEL: /api/users/id` - delete a record
 

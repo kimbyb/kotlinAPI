@@ -37,14 +37,13 @@ class UserController(private val userService: UserService) {
 
     @PutMapping("/{id}")
     fun updateUsername(@PathVariable id: Long, @RequestBody updatedUsername: String): ResponseEntity<String> {
-        val newUsername = updatedUsername
-        if (newUsername.isBlank()) {
+        if (updatedUsername.isBlank()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Username can't be empty")
         }
-        val updated = userService.updateUsername(id, newUsername)
+        val updated = userService.updateUsername(id, updatedUsername.toString())
         return if (updated) {
-            ResponseEntity.ok("User with ID $id has been updated with a new username: $newUsername")
+            ResponseEntity.ok("User with ID $id has been updated with a new username: ${updatedUsername.toString()}")
         } else {
             ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("User with ID $id not found.")
