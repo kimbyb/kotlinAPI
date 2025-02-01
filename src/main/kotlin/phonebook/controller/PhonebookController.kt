@@ -30,23 +30,18 @@ class PhonebookController(private val phonebookService: PhonebookService) {
         }
     }
 
-    @GetMapping("/searchByUsername")
-    fun searchByUsername(@RequestParam username: String): ResponseEntity<List<PhonebookEntity>> {
-        val response = phonebookService.searchByUsername(username)
-        return if (response.isEmpty()) {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body(emptyList())
-        } else {
-            ResponseEntity.ok(response)
-        }
-    }
-
     @GetMapping("/search")
-    fun searchByPhoneNumber(@RequestParam phoneNumber: String): ResponseEntity<List<PhonebookEntity>> {
-        val results = phonebookService.searchByPhoneNumber(phoneNumber)
-        return if (results.isNotEmpty()) {
-            ResponseEntity.ok(results)
-        } else {
+    fun searchByPhoneNumber(@RequestParam(required = false) phoneNumber: String?, @RequestParam(required = false) username: String?): ResponseEntity<List<PhonebookEntity>> {
+        val results = when {
+            !username.isNullOrBlank() -> phonebookService.searchByUsername(username)
+            !phoneNumber.isNullOrBlank() -> phonebookService.searchByPhoneNumber(phoneNumber)
+            phoneNumber != null && username != null -> phonebookService.searchByBoth(username, phoneNumber)
+            else -> emptyList()
+    }
+        return if (results.isEmpty()) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(emptyList())
+        } else {
+            ResponseEntity.ok(results)
         }
     }
 

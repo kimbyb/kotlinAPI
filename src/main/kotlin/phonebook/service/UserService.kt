@@ -37,10 +37,6 @@ class UserService(
         return userRepository.findByIdOrNull(id)
     }
 
-    fun getAllUsersWithPhonebooks(): List<UserEntity> {
-        return userRepository.findAll()
-    }
-
     @Transactional
     fun updateUsername(id: Long, newUsername: String) {
         val user = userRepository.findById(id).orElseThrow {

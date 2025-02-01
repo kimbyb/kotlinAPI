@@ -11,5 +11,7 @@ interface PhonebookEntryRepository : JpaRepository<PhonebookEntity, Long> {
 
     fun findByPhoneNumber(phoneNumber: String): List<PhonebookEntity>
 
+    fun findByUserUsernameContainingIgnoreCaseAndPhoneNumber(username: String, phoneNumber: String): List<PhonebookEntity>
+
 }
 

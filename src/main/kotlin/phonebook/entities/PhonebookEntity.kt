@@ -1,6 +1,7 @@
 package phonebook.entities
 
-import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonBackReference
+import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.*
 
 @Entity
@@ -18,6 +19,11 @@ data class PhonebookEntity(
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
+    @JsonBackReference
     val user: UserEntity? = null
-)
+)  {
+    @JsonProperty("username") // This adds `username` to JSON response
+    fun getUsername(): String {
+        return user?.username ?: ""
+    }
+}

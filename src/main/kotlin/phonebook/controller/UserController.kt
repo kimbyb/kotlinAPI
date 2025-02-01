@@ -7,7 +7,7 @@ import phonebook.entities.UserEntity
 import phonebook.service.UserService
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 class UserController(private val userService: UserService) {
 
     @GetMapping

@@ -17,9 +17,9 @@ spring.datasource.driver-class-name=org.h2.Driver
 
 **Architecture**
 
-The API creates two tables: USERS and PHONEBOOK.
+The API creates two tables: user and PHONEBOOK.
 
-USERS
+user
 ```
 id: Long, unique: true
 username: String
@@ -29,28 +29,26 @@ PHONEBOOK
 id: Long, unique: true
 name: String
 phoneNumber: String
-user_id: links to users.id 
+user_id: links to user.id 
 
 ```
 
 
 **Endpoints:**
 
-_**Users:**_
+_**user:**_
 
-`GET: /api/users` - returns all users without phonebooks
+`GET: /api/user` - returns all user without phonebooks
 
-`GET: /api/all` - returns all users and their phonebooks
+`POST: /api/user` - adds new user and their phonebook (body required, type JSON). Can add one at a time
 
-`POST: /api/users` - adds new user and their phonebook (body required, type JSON). Can add one at a time
+`GET: /api/user/id` - returns specific record
 
-`GET: /api/users/id` - returns specific record
+`PUT: /api/user/id` - update record by id. Supports just update of username. Use plain text for it
 
-`PUT: /api/users/id` - update record by id. Supports just update of username. Use plain text for it
+`DEL: /api/user/id` - delete a record
 
-`DEL: /api/users/id` - delete a record
-
-**JSON body format:**
+**Example SON Body:**
 
 ```
 {
@@ -64,21 +62,23 @@ _**Users:**_
 
 _**Phonebook**_
 
-`POST: /api/phonebook/addPhoneNumber` - adds new phone number to users phonebook
+`POST: /api/phonebook/addPhoneNumber` - adds new phone number to user phonebook
 
-**JSON Body**
+**Example JSON Body**
 ```
 {
   "name": "Kim",
   "phoneNumber": "9876543210",
-  "userid": 1
+  "user": {"id" : 1}
 }
 ```
 `GET: /api/phonebook/id` - gets all phone numbers by user id
 
-`GET: /api/phonebook/searchByUsername?username=` - seraches by useranme and its parts 
+`GET: /api/phonebook/search?username=` - searches by useranme and its parts 
 
-`GET: /api/phonebook/search?phoneNumber=` - seraches by phone number and its parts 
+`GET: /api/phonebook/search?phoneNumber=` - searches by phone number
+
+`GET: /api/phonebook/search?phoneNumber=NUMBER&username=USERNAME` - searches by phone number + username and its parts
 
 `PUT: /api/phonebook/id` - updates phone number/ name by id
 

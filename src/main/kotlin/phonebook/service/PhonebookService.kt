@@ -14,9 +14,12 @@ class PhonebookService(
 
     @Transactional
     fun addPhonenumberToUser(request: PhonebookEntity) {
-        val user = userRepository.findById(request.id).orElseThrow {
-            throw IllegalArgumentException("User with ID ${request.id} not found")
+        val userId = request.user?.id ?: throw IllegalArgumentException("User ID is missing in the request")
+
+        val user = userRepository.findById(userId).orElseThrow {
+            throw IllegalArgumentException("User with ID $userId not found")
         }
+
         val phoneNumber = PhonebookEntity(
             name = request.name,
             phoneNumber = request.phoneNumber,
@@ -54,4 +57,7 @@ class PhonebookService(
         return phonebookEntryRepository.findByPhoneNumber(phoneNumber)
     }
 
+    fun searchByBoth(username: String, phoneNumber: String): List<PhonebookEntity> {
+        return phonebookEntryRepository.findByUserUsernameContainingIgnoreCaseAndPhoneNumber(username, phoneNumber)
+    }
 }
